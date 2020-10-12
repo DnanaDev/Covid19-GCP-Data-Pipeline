@@ -1,5 +1,11 @@
 
 .DS_Store
+/.idea
+/.ipynb_checkpoints
+/Data_Pipeline/__pycache__
+/Data_Pipeline/.ipynb_checkpoints
+/Misc.
+/Starter_Notebooks/__pycache__
 
 # Ignore Resources Folder
 /Resources
