@@ -157,6 +157,7 @@ def make_state_dataframe(save=False):
 
     # Read in CSV, rename, pivot to make datetime index
     state_daily_data = pd.read_csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
+    state_daily_data.drop(['Date_YMD'], axis = 1, inplace=True)
     state_daily_data.rename(columns=state_identifier, inplace=True)
     state_daily_data.Date = pd.to_datetime(state_daily_data.Date)
     state_daily_data = state_daily_data.pivot(index='Date', columns='Status')
