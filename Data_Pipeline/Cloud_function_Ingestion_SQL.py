@@ -51,10 +51,10 @@ def connect_db():
     Problematic.
     """
     db_user = 'postgres'
-    db_pass = '***REMOVED***'
+    db_pass = ''
     db_name = 'covid19-data'
     db_socket_dir = os.environ.get("DB_SOCKET_DIR", "/cloudsql")
-    cloud_sql_connection_name = '***REMOVED***'
+    cloud_sql_connection_name = ''
 
     engine = sqlalchemy.create_engine(
         # Equivalent URL:

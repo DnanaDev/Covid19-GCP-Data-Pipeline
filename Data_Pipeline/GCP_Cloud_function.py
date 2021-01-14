@@ -8,6 +8,9 @@ import json
 from urllib.request import urlopen
 import pandas as pd
 import datetime
+from google.cloud import storage
+from os import listdir, getcwd
+from os.path import isfile, join
 
 
 def list_cases_stat(json_obj, column):
@@ -160,24 +163,6 @@ def get_test_dataframe(file_loc):
     print(f"Downloaded Testing Stats CSV at '{file_loc}'")
 
 
-# -
-
-# ### Uploading Data to GCS Bucket
-
-from google.cloud import storage
-from os import listdir, getcwd
-from os.path import isfile, join
-
-
-# +
-# Creating client
-# storage_client = storage.Client()
-# Connecting to Bucket
-# bucket = storage_client.get_bucket('***REMOVED***')
-# Listing all blobs or objects - funny flat hierarchy structure followed by GCS
-# print(list(bucket.list_blobs()))
-# -
-
 def upload_to_bucket(bucket, local_folder, bucket_folder):
     """ Uploads Extracted files from pipeline to GCS Bucket.
     """
@@ -192,8 +177,6 @@ def upload_to_bucket(bucket, local_folder, bucket_folder):
 
     print(f'Uploaded {files} to "{bucket.id}" bucket.')
 
-
-# #### Main Function (End-Point)
 
 def main(request):
     """Endpoint for Google Cloud Function, Downloads files to temp
