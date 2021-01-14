@@ -27,7 +27,9 @@ import pandas as pd
 from Covid19_india_org_api import make_dataframe, get_test_dataframe, make_state_dataframe
 from psycopg2 import ProgrammingError, errors, IntegrityError
 import subprocess
-
+from os.path import join
+from pathlib import Path
+from os import getcwd
 
 # Creating Tables
 
@@ -97,7 +99,7 @@ def add_data_table(engine, tablename, df):
     # Just can't seem to get errors to work 
     except IntegrityError as e:
         print(e)
-        if err == IntegrityError:
+        if e == IntegrityError:
             print('Update Master Table first')
 
 
@@ -114,7 +116,7 @@ def backup_db(path):
 
 if __name__ == '__main__':
     # Create Engine and connect to DB
-    engine = create_engine('postgresql://postgres:<Pass>@localhost:5432/Covid19-India')
+    engine = create_engine('postgresql://postgres:***REMOVED***@localhost:5432/Covid19-India')
 
     # Creating Tables (if run for the first time)
     # create_table_overall_stats(engine)
@@ -127,17 +129,16 @@ if __name__ == '__main__':
 
     # 2. Testing Data - has duplicates for a single date, will fail the unique constraint for key, removing.
     test = get_test_dataframe()
-    test = test.loc[~test.index.duplicated(keep='last')]
 
     # 3. States data
     state = make_state_dataframe()
 
     # Adding data to tables
-
     add_data_table(engine, 'overall_stats', data)
     add_data_table(engine, 'testing_stats', test)  # remove -1 if update after midnight, due to mismatched
     # frequency of update
     add_data_table(engine, 'states_info', state)
 
     # local backup of DB - Currently overwrites previous backup, do acc. to time/data
-    backup_db('/Users/apple/Desktop/DS/mentorskool/covid-19-DnanaDev/Data/Cleaned/Covid19-India_backup.sql')
+    path = join(str(Path(getcwd()).parents[0]), 'Data/Cleaned/')
+    backup_db(join(path, 'Covid19-India_backup.sql'))

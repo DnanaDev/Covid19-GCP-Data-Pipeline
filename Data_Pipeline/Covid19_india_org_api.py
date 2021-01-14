@@ -114,12 +114,17 @@ def make_dataframe(save=False):
     total_dec = list_cases_stat(data, 'totaldeceased')
     total_rec = list_cases_stat(data, 'totalrecovered')
 
-    list_dates = list_cases_stat(data, 'date')
+    list_dates = list_cases_stat(data, 'dateymd')
 
     # Converting Dates to 'datetime'
     new_date = []
+
     for date in list_dates:
-        new_date.append(datetime.datetime.strptime(date + ' 2020', '%d %B %Y'))
+        # if entry is not of valid format continue to next
+        try:
+            new_date.append(datetime.datetime.strptime(date, '%Y-%m-%d'))
+        except ValueError:
+            continue
 
     list_dates = new_date
 
@@ -127,7 +132,7 @@ def make_dataframe(save=False):
     {'DailyConfirmed': daily_conf, 'DailyDeceased': daily_dec, 'DailyRecovered': daily_rec,
      'TotalConfirmed': total_conf, 'TotalDeceased': total_dec, 'TotalRecovered': total_rec})
     # Renaming Index to be consistent with all other CSVs
-    dataframe.rename_axis(index = 'Date', inplace=True)
+    dataframe.rename_axis(index='Date', inplace=True)
 
     if save:
         dataframe.to_csv(save)
@@ -144,7 +149,7 @@ def make_state_dataframe(save=False):
     for each state and Total - National time series.
     """
 
-    # Dictionary for renaming state codes to full state names, slightly wasteful, 
+    # Dictionary for renaming state codes to full state names, slightly wasteful,
     # additional API call to different file.
     response = urlopen("https://api.covid19india.org/data.json")
     source = response.read()
@@ -157,7 +162,7 @@ def make_state_dataframe(save=False):
 
     # Read in CSV, rename, pivot to make datetime index
     state_daily_data = pd.read_csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
-    state_daily_data.drop(['Date_YMD'], axis = 1, inplace=True)
+    state_daily_data.drop(['Date_YMD'], axis=1, inplace=True)
     state_daily_data.rename(columns=state_identifier, inplace=True)
     state_daily_data.Date = pd.to_datetime(state_daily_data.Date)
     state_daily_data = state_daily_data.pivot(index='Date', columns='Status')
@@ -201,18 +206,21 @@ def get_test_dataframe(save=False):
     dates_list = []
 
     # Parsing Dates and Number of Samples Collected on day.
+    # Converting Date string to Datetime
+
     for rows in data['rows']:
-        dates_list.append(rows['id'].split('T')[0])
-        stat_list.append(rows['value']['samples'])
+        try:
+            date = rows['id'].split('T')[0]
+            dates_list.append(datetime.datetime.strptime(date, '%Y-%m-%d'))
+            stat_list.append(rows['value']['samples'])
+        except ValueError:
+            continue
 
     testing_data = pd.DataFrame(index=dates_list, data={'TestingSamples': stat_list})
 
-    # Converting Date string to Datetime
-    dates = []
-    for date in testing_data.index.to_list():
-        dates.append(datetime.datetime.strptime(date, '%Y-%m-%d'))
+    # Removing duplicate indexes
+    testing_data = testing_data.loc[~testing_data.index.duplicated(keep='last')]
 
-    testing_data.index = dates
     # Renaming Index to be consistent with all other CSVs
     testing_data.rename_axis(index='Date', inplace=True)
 

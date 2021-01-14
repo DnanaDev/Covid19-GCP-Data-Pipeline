@@ -94,7 +94,6 @@ def main(request):
     state = pd.read_csv('/tmp/COVID_India_State.csv', parse_dates=True, index_col=0)
     # Load and clean test data
     test = pd.read_csv('/tmp/COVID_India_Test_data.csv', parse_dates=True, index_col=0)
-    test = test.loc[~test.index.duplicated(keep='last')]
 
     # Connect to CloudSQL DB
     engine = connect_db()
