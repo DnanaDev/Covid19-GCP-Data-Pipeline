@@ -1,7 +1,6 @@
 from google.cloud import storage
 import sqlalchemy
 import pandas as pd
-import pg8000  # databse driver
 import os
 
 
@@ -11,13 +10,12 @@ def download_folder_bucket(bucket, bucket_folder, local_folder):
     # list of filenames in bucket_folder
     file_list = [file.name for file in bucket.list_blobs(prefix=bucket_folder)]
 
-    # iterate over blobs and doenload to local folder + filename
+    # iterate over blobs and download to local folder + filename
 
     for file in file_list:
         blob = bucket.blob(file)
         # filename by splitting name by '/' and keeping last item
         filename = blob.name.split('/')[-1]
-        # download to local folder
         blob.download_to_filename(local_folder + filename)
     return f'Downloaded {len(file_list)} Files'
 
@@ -38,13 +36,9 @@ def add_data_table(engine, tablename, df):
         print(f'Added {len(df[num_records:])} Records to table')
 
     # Just can't seem to get errors to work
-    except:
-        print('Errored. Investigate')
+    except Exception as e:
+        print('Investigate Error: \n' + e)
 
-
-# Create SQLAlchemy connection to CloudSQL Server.
-
-# Remember - storing secrets in plaintext is potentially unsafe.
 
 def connect_db():
     """ Connects to Cloud SQL DB Using provided Unix Socket. Username, Password etc. Hardcoded.
@@ -84,7 +78,7 @@ def main(request):
     storage_client = storage.Client()
 
     # connect to a bucket
-    bucket = storage_client.get_bucket('***REMOVED***')
+    bucket = storage_client.get_bucket('covid19-india-analysis-bucket')
 
     # Download RAW CSVs from GCS Bucket to Cloud Function temp. storage.
     download_folder_bucket(bucket, 'Data/Raw/', '/tmp/')

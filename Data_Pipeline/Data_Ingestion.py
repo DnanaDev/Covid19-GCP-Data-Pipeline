@@ -99,8 +99,7 @@ def add_data_table(engine, tablename, df):
     # Just can't seem to get errors to work 
     except IntegrityError as e:
         print(e)
-        if e == IntegrityError:
-            print('Update Master Table first')
+        print('Update Master Table first')
 
 
 # Database local backup
@@ -116,7 +115,7 @@ def backup_db(path):
 
 if __name__ == '__main__':
     # Create Engine and connect to DB
-    engine = create_engine('postgresql://postgres:pass@localhost:5432/Covid19-India')
+    engine = create_engine('')
 
     # Creating Tables (if run for the first time)
     # create_table_overall_stats(engine)

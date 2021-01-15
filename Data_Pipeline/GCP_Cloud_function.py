@@ -86,7 +86,7 @@ def make_state_dataframe(file_loc):
     for each state and Total - National time series.
     """
 
-    # Dictionary for renaming state codes to full state names, slightly wasteful, 
+    # Dictionary for renaming state codes to full state names, slightly wasteful,
     # additional API call to different file.
     response = urlopen("https://api.covid19india.org/data.json")
     source = response.read()
@@ -99,6 +99,7 @@ def make_state_dataframe(file_loc):
 
     # Read in CSV, rename, pivot to make datetime index
     state_daily_data = pd.read_csv('https://api.covid19india.org/csv/latest/state_wise_daily.csv')
+    state_daily_data.drop(['Date_YMD'], axis=1, inplace=True)
     state_daily_data.rename(columns=state_identifier, inplace=True)
     state_daily_data.Date = pd.to_datetime(state_daily_data.Date)
     state_daily_data = state_daily_data.pivot(index='Date', columns='Status')
@@ -187,6 +188,6 @@ def main(request):
     # Creating client
     storage_client = storage.Client()
     # Connecting to Bucket
-    bucket = storage_client.get_bucket('***REMOVED***')
+    bucket = storage_client.get_bucket('covid19-india-analysis-bucket')
     # Upload all files in temp to bucket.
     upload_to_bucket(bucket=bucket, local_folder='/tmp/', bucket_folder='Data/Raw/')
