@@ -115,7 +115,7 @@ def backup_db(path):
 
 if __name__ == '__main__':
     # Create Engine and connect to DB
-    engine = create_engine('')
+    engine = create_engine('postgresql://postgres:Anand1996@localhost:5432/Covid19-India')
 
     # Creating Tables (if run for the first time)
     # create_table_overall_stats(engine)

@@ -69,6 +69,7 @@ ALTER TABLE public.testing_stats OWNER TO postgres;
 --
 
 COPY public.overall_stats ("Date", "DailyConfirmed", "DailyDeceased", "DailyRecovered", "TotalConfirmed", "TotalDeceased", "TotalRecovered") FROM stdin;
+2021-01-14	15677	189	15848	10528432	151363	10161915
 2020-01-30	1	0	0	1	0	0
 2020-01-31	0	0	0	1	0	0
 2020-02-01	0	0	0	1	0	0
@@ -12361,6 +12362,45 @@ COPY public.states_info ("Date", "State", "Confirmed", "Deceased", "Recovered") 
 2021-01-13	Uttar Pradesh	466	15	879
 2021-01-13	Uttarakhand	209	4	289
 2021-01-13	West Bengal	723	18	794
+2021-01-14	Andaman and Nicobar Islands	7	0	0
+2021-01-14	Andhra Pradesh	179	4	219
+2021-01-14	Arunachal Pradesh	15	0	5
+2021-01-14	Assam	19	0	31
+2021-01-14	Bihar	314	2	238
+2021-01-14	Chandigarh	23	1	41
+2021-01-14	Chhattisgarh	607	10	970
+2021-01-14	DD	0	0	0
+2021-01-14	Dadra and Nagar Haveli and Daman and Diu	2	0	0
+2021-01-14	Delhi	340	4	390
+2021-01-14	Goa	103	2	67
+2021-01-14	Gujarat	570	3	737
+2021-01-14	Haryana	187	6	329
+2021-01-14	Himachal Pradesh	62	0	81
+2021-01-14	Jammu and Kashmir	79	3	237
+2021-01-14	Jharkhand	144	0	173
+2021-01-14	Karnataka	408	3	564
+2021-01-14	Kerala	5490	19	4337
+2021-01-14	Ladakh	7	0	29
+2021-01-14	Lakshadweep	0	0	0
+2021-01-14	Madhya Pradesh	420	8	598
+2021-01-14	Maharashtra	3579	70	3309
+2021-01-14	Manipur	18	0	41
+2021-01-14	Meghalaya	18	0	17
+2021-01-14	Mizoram	7	0	5
+2021-01-14	Nagaland	32	0	11
+2021-01-14	Odisha	222	1	210
+2021-01-14	Puducherry	43	1	22
+2021-01-14	Punjab	213	10	253
+2021-01-14	Rajasthan	281	2	384
+2021-01-14	Sikkim	7	1	60
+2021-01-14	State Unassigned	0	0	0
+2021-01-14	Tamil Nadu	665	4	826
+2021-01-14	Telangana	276	1	238
+2021-01-14	Total	15677	189	15848
+2021-01-14	Tripura	5	0	6
+2021-01-14	Uttar Pradesh	501	14	539
+2021-01-14	Uttarakhand	154	3	187
+2021-01-14	West Bengal	680	17	694
 \.
 
 
@@ -12663,6 +12703,7 @@ COPY public.testing_stats ("Date", "TestingSamples") FROM stdin;
 2021-01-11	181755831
 2021-01-12	182652887
 2021-01-13	183489114
+2021-01-14	184232305
 \.
 
 
