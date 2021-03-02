@@ -10,3 +10,6 @@
 # Ignore Resources Folder
 /Resources
 /Research
+
+/build
+/dist
